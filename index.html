@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-color: rgb(43, 43, 43);
+                color: white;
+            
+            }
+        </style>
+    </head>
+    <body>
+        <section id = "topSection">
+            <input id="ratingFilter">
+            <button id="filterButton" onclick = "renderList()">Filter Rating</button>
+            <p id = "totalAmountParagraph"></p>
+        </section>
+
+        <section id = "shoppingCart">
+            <h1>Shopping Cart:</h1>
+        </section>
+
+        <section>
+            <div id="itemContent">
+
+            </div>
+        </section>
+
+
+        <script>
+
+
+            let totalSum = []
+            let shoppingCartArr = []
+            //let sum = 0
+            const div = document.getElementById('itemContent')
+            let items = []
+
+            
+
+            function renderList(){
+
+                //Den åttonde varianten
+
+                div.innerHTML = ''
+
+                const ratingValue = document.getElementById("ratingFilter").value
+
+                items.filter(item => {
+                    if (item.rating >= ratingValue){
+
+
+                        const name = document.createElement('h1')
+                        name.innerHTML = item.name
+                        div.appendChild(name)
+
+                        const img = document.createElement('img')
+                        img.src = item.images[0].src.small
+                        img.alt = item.images[0].alt
+                        div.appendChild(img)
+
+                        const description = document.createElement('p')
+                        description.innerHTML = item.description + "\n"
+                        div.appendChild(description)
+
+                        const price = document.createElement('p')
+                        price.innerHTML = "Price: " + item.price
+                        div.appendChild(price)
+
+                        const rating = document.createElement('p')
+                        rating.innerHTML = "Rating: " + item.rating
+                        div.appendChild(rating)
+
+                        const stock = document.createElement('p')
+                        stock.innerHTML = "Stock: " + item.stock
+                        div.appendChild(stock)
+
+                        const button = document.createElement('button')
+                        button.innerHTML = "Buy"
+                        button.idList
+                        div.appendChild(button)
+
+                        button.addEventListener("click", function(){
+                            totalSum.push(item.price)
+                            shoppingCartArr.unshift(item.name, item.price)
+
+                            shoppingCart()
+                            totalAmount()
+                            console.log(totalSum)
+                            console.log(shoppingCartArr)
+                        })
+                        }
+                    })
+                 
+                // Denna variant fungerar men utför inte det åttonde uppdraget
+
+                // itemData.forEach(item => {
+
+                //     const name = document.createElement('h1')
+                //     name.innerHTML = item.name
+                //     div.appendChild(name)
+
+                //     const img = document.createElement('img')
+                //     img.src = item.images[0].src.small
+                //     img.alt = item.images[0].alt
+                //     div.appendChild(img)
+
+                //     const description = document.createElement('p')
+                //     description.innerHTML = item.description + "\n"
+                //     div.appendChild(description)
+
+                //     const price = document.createElement('p')
+                //     price.innerHTML = "Price: " + item.price
+                //     div.appendChild(price)
+
+                //     const rating = document.createElement('p')
+                //     rating.innerHTML = "Rating: " + item.rating
+                //     div.appendChild(rating)
+
+                //     const stock = document.createElement('p')
+                //     stock.innerHTML = "Stock: " + item.stock
+                //     div.appendChild(stock)
+
+                //     const button = document.createElement('button')
+                //     button.innerHTML = "Buy"
+                //     button.idList
+                //     div.appendChild(button)
+
+                //     button.addEventListener("click", function(){
+                //         totalSum.push(item.price)
+                //         shoppingCartArr.unshift(item.name, item.price)
+
+                //         shoppingCart()
+                //         totalAmount()
+                //         console.log(totalSum)
+                //         console.log(shoppingCartArr)
+                //     })
+                // })
+            
+            }
+
+            function totalAmount () {
+                let sum = 0
+                totalSum.forEach(purchase => {
+                    sum += purchase
+                })
+                const totalAmountParagraph = document.getElementById('totalAmountParagraph')
+                totalAmountParagraph.innerHTML = `Total Amount: ${sum}kr`
+                
+            }
+
+            function shoppingCart(){
+                const shoppingCartSection = document.getElementById("shoppingCart")
+
+
+
+                const yourOrder = document.createElement('p')
+                shoppingCartSection.append(yourOrder)
+                
+                shoppingCartArr.map(product => {
+                    yourOrder.innerHTML = `${shoppingCartArr[0]} - ${shoppingCartArr[1]}`
+                })
+            }
+
+            
+            totalAmount()
+
+            const url = "https://mock-data-api.firebaseio.com/webb21/products.json"
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                items = data
+                renderList()
+            })
+
+
+        </script>
+    </body>
+</html>
